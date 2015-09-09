@@ -39,7 +39,7 @@ python setup.py install
 	'cookieName': 'iPlanetDirectoryPro',
 	'domains': ['example.com'],
 	'forgotPassword': 'false'
-}
+	}
 
 #### Example simple login user:
 
