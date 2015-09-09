@@ -1,6 +1,8 @@
 Python 3 interface to OpenAM REST Services
 -----------------------------------
 
+Features and roadmap can be found in the wiki: https://github.com/Semprini/python3-openam/wiki
+
 Code borrowed and reworked from:
 
  - [acgray: python-openam](https://github.com/acgray/python-openam)
