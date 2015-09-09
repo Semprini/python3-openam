@@ -11,12 +11,14 @@ The tutorial for setting up an OpenAM server is here: https://backstage.forgeroc
 
 For REST Services documentation please see [Forgerock Use OpenAM RESTful Services](http://openam.forgerock.org/openam-documentation/openam-doc-source/doc/webhelp/dev-guide/chap-rest.html)
 
-To test once you have a running OpenAM that you can log into from your browser:
-cd /path/to/python3-openam-<branch or master>
-python openam/tests.py http://my_openam_server:8080/openam amadmin password
 
-To Install to site-packages:
-python setup.py install
+#### Testing once you have a running OpenAM that you can log into from your browser:
+    > cd /path/to/python3-openam-<branch or master>
+    > python openam/tests.py http://my_openam_server:8080/openam amadmin password
+
+
+#### To Install to site-packages:
+    > python setup.py install
 
 #### Example of getting server info:
 
