@@ -1,8 +1,18 @@
 import unittest
 
+try:
+    # Check if openam module has been added to site-packages
+    import openam
+except ImportError:
+    # If not the parent directory to this file should have the openam package so add that to the path
+    import os,sys,inspect
+    currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+    parentdir = os.path.dirname(currentdir)
+    sys.path.insert(0,parentdir) 
+
 from openam.context import Context, Identity, ServerInfo
 from openam.user import User
-
+    
 class OpenAMTestCase(unittest.TestCase):
     def __init__(self, testname, url, username, password):
         super(OpenAMTestCase, self).__init__(testname)
