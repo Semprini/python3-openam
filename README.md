@@ -16,7 +16,7 @@ For REST Services documentation please see [Forgerock Use OpenAM RESTful Service
 #### To Install to site-packages:
     > python setup.py install
     
-#### Testing once you have installed python3-openam and have a running OpenAM that you can log into from your browser:
+#### Testing once you have a running OpenAM that you can log into from your browser:
     > cd /path/to/python3-openam-<branch or master>
     > python openam/tests.py http://my_openam_server:8080/openam amadmin password
 
