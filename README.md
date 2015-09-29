@@ -1,6 +1,8 @@
 Python 3 interface to OpenAM REST Services
 -----------------------------------
 
+Python 3.5 introduced a change to SSL cert checking in urllib. When connecting to an https OpenAM server then use python 3.5
+
 Features and roadmap can be found in the wiki: https://github.com/Semprini/python3-openam/wiki
 
 Code borrowed and reworked from:
