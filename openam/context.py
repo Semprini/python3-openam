@@ -7,9 +7,15 @@
 #
 
 import urllib, urllib.error, urllib.request
+import ssl
 import json
 from urllib.parse import urlparse, urljoin, urlencode
 from openam.error import OpenAMError
+
+#SSL Certificate checking
+SSL_PROTOCOL = ssl.PROTOCOL_SSLv23  # or other options like ssl.PROTOCOL_TLSv1
+SSL_VERIFY_MODE = ssl.CERT_REQUIRED     # CERT_REQUIRED for production, CERT_NONE when there is a self signed cert on the openam server
+SSL_VERIFY_FLAGS = 0
 
 # REST API URIs
 REST_OPENAM_COOKIE_NAME_FOR_TOKEN = '/identity/getCookieNameForToken'
@@ -71,7 +77,14 @@ class Context(object):
         self.__timeout = timeout
 
         self.authentications = []
+        
+        self._ssl_ctx = None
+        if self._openam_url[:5].lower() == "https":
+            self._ssl_ctx = ssl.SSLContext(SSL_PROTOCOL)
+            self._ssl_ctx.verify_mode = SSL_VERIFY_MODE
+            self._ssl_ctx.verify_flags = SSL_VERIFY_FLAGS
 
+        
     @property
     def URL_LOGIN(self):
         if self._realm:
@@ -149,7 +162,7 @@ class Context(object):
         """
         Wrapper around http_request() to save keystrokes.
         """
-        data, content_type = http_request(_get_full_url(self._openam_url, urlpath), params, headers, self.__timeout, method)
+        data, content_type = http_request(_get_full_url(self._openam_url, urlpath), params, headers, self.__timeout, method, self._ssl_ctx)
 
         return data
 
@@ -194,7 +207,7 @@ def _get_full_url(base_url, path):
     return urljoin(processed_base_url, processed_path)
 
 
-def http_request(url, values=None, headers={}, timeout=20, method=None):
+def http_request(url, values=None, headers={}, timeout=20, method=None, ssl_context=None):
     """
     Send an HTTP request (GET if no values, POST if values provided or method if provided) and attempt to return the response data.
     Values are encoded as utf-8. Response content is decoded based on content type in response header.
@@ -208,7 +221,7 @@ def http_request(url, values=None, headers={}, timeout=20, method=None):
         data=None
     req = urllib.request.Request(url, data, headers, method=method)
     try:
-        resp = urllib.request.urlopen(req, timeout=timeout)
+        resp = urllib.request.urlopen(req, timeout=timeout, context=ssl_context)
         response_data = resp.read()
 
         # Check the encoding type of the content and decode
