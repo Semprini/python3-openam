@@ -221,7 +221,10 @@ def http_request(url, values=None, headers={}, timeout=20, method=None, ssl_cont
         data=None
     req = urllib.request.Request(url, data, headers, method=method)
     try:
-        resp = urllib.request.urlopen(req, timeout=timeout, context=ssl_context)
+        if ssl_context:
+            resp = urllib.request.urlopen(req, timeout=timeout, context=ssl_context)
+        else:
+            resp = urllib.request.urlopen(req, timeout=timeout)
         response_data = resp.read()
 
         # Check the encoding type of the content and decode
