@@ -112,5 +112,5 @@ if __name__ == '__main__':
     suite.addTest(TestUser("test_change_password", args.url, args.username, args.password))
     #suite.addTest(TestIdentityCreate("test_create_identity", args.url, args.username, args.password))
 
-    unittest.TextTestRunner().run(suite)
+    unittest.TextTestRunner(verbosity=2).run(suite)
     
