@@ -14,7 +14,7 @@ from openam.error import OpenAMError
 
 #SSL Certificate checking
 SSL_PROTOCOL = ssl.PROTOCOL_SSLv23  # or other options like ssl.PROTOCOL_TLSv1
-SSL_VERIFY_MODE = ssl.CERT_REQUIRED     # CERT_REQUIRED for production, CERT_NONE when there is a self signed cert on the openam server
+SSL_VERIFY_MODE = ssl.CERT_NONE     # CERT_REQUIRED for production, CERT_NONE when there is a self signed cert on the openam server
 SSL_VERIFY_FLAGS = 0
 
 # REST API URIs
