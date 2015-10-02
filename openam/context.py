@@ -12,9 +12,9 @@ import json
 from urllib.parse import urlparse, urljoin, urlencode
 from openam.error import OpenAMError
 
-#SSL Certificate checking
-SSL_PROTOCOL = ssl.PROTOCOL_SSLv23  # or other options like ssl.PROTOCOL_TLSv1
+#SSL Certificate checking - Uses default context unless CERT_NONE verification selected
 SSL_VERIFY_MODE = ssl.CERT_NONE     # CERT_REQUIRED for production, CERT_NONE when there is a self signed cert on the openam server
+SSL_PROTOCOL = ssl.PROTOCOL_SSLv23  # or other options like ssl.PROTOCOL_TLSv1
 SSL_VERIFY_FLAGS = 0
 
 # REST API URIs
@@ -80,9 +80,14 @@ class Context(object):
         
         self._ssl_ctx = None
         if self._openam_url[:5].lower() == "https":
-            self._ssl_ctx = ssl.SSLContext(SSL_PROTOCOL)
-            self._ssl_ctx.verify_mode = SSL_VERIFY_MODE
-            self._ssl_ctx.verify_flags = SSL_VERIFY_FLAGS
+            if SSL_VERIFY_MODE != ssl.CERT_NONE:
+                # The default context is reccomended so if verifying certs just use it
+                self._ssl_ctx = ssl.create_default_context() 
+            else:
+                # If no cert verification is required (for dev) then create an insecure context
+                self._ssl_ctx = ssl.SSLContext(SSL_PROTOCOL)
+                self._ssl_ctx.verify_mode = SSL_VERIFY_MODE
+                self._ssl_ctx.verify_flags = SSL_VERIFY_FLAGS
 
         
     @property
